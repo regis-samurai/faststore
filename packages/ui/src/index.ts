@@ -137,36 +137,6 @@ export type {
   RadioOptionProps,
 } from './components/molecules/RadioGroup'
 
-export {
-  default as Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-} from './components/molecules/Accordion'
-export type {
-  AccordionProps,
-  AccordionItemProps,
-  AccordionButtonProps,
-  AccordionPanelProps,
-} from './components/molecules/Accordion'
-
-export {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableRow,
-} from './components/molecules/Table'
-export type {
-  TableProps,
-  TableBodyProps,
-  TableCellProps,
-  TableFooterProps,
-  TableHeadProps,
-  TableRowProps,
-} from './components/molecules/Table'
-
 export { default as Form } from './components/molecules/Form'
 export type { FormProps } from './components/molecules/Form'
 
@@ -175,19 +145,6 @@ export type { AlertProps } from './components/molecules/Alert'
 
 export { default as QuantitySelector } from './components/molecules/QuantitySelector'
 export type { QuantitySelectorProps } from './components/molecules/QuantitySelector'
-
-export {
-  default as Dropdown,
-  DropdownButton,
-  DropdownItem,
-  DropdownMenu,
-} from './components/molecules/Dropdown'
-export type {
-  DropdownProps,
-  DropdownButtonProps,
-  DropdownItemProps,
-  DropdownMenuProps,
-} from './components/molecules/Dropdown'
 
 // Organisms
 export {
@@ -203,17 +160,6 @@ export type {
 
 export { Tiles, Tile } from './components/organisms/Tiles'
 export type { TilesProps, TileProps } from './components/organisms/Tiles'
-
-export {
-  default as Hero,
-  HeroHeading,
-  HeroImage,
-} from './components/organisms/Hero'
-export type {
-  HeroProps,
-  HeroHeadingProps,
-  HeroImageProps,
-} from './components/organisms/Hero'
 
 // Hooks
 export { default as useSlider } from './hooks/useSlider'

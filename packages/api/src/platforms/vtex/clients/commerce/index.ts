@@ -1,5 +1,7 @@
 import { FACET_CROSS_SELLING_MAP } from '../../utils/facets'
+import { mutateCookieContext } from '../../utils/contex'
 import { fetchAPI } from '../fetch'
+import fetch from 'isomorphic-unfetch'
 
 import type { PortalProduct } from './types/Product'
 import type { Context, Options } from '../../index'
@@ -20,6 +22,10 @@ import { MasterDataResponse } from './types/Newsletter'
 import type { Address, AddressInput } from './types/Address'
 
 type ValueOf<T> = T extends Record<string, infer K> ? K : never
+
+// interface URLSearchParams {
+//   entries: () => IterableIterator<[string, string]>
+// }
 
 const BASE_INIT = {
   method: 'POST',
@@ -51,20 +57,22 @@ export const VtexCommerce = (
           fetchAPI(`${base}/api/catalog_system/pub/portal/pagetype/${slug}`),
       },
       products: {
-        crossselling: (
-          { type, productId, groupByProduct = true }: {
-            type: ValueOf<typeof FACET_CROSS_SELLING_MAP>;
-            productId: string;
-            groupByProduct?: boolean;
-          },
-        ): Promise<PortalProduct[]> => {
+        crossselling: ({
+          type,
+          productId,
+          groupByProduct = true,
+        }: {
+          type: ValueOf<typeof FACET_CROSS_SELLING_MAP>
+          productId: string
+          groupByProduct?: boolean
+        }): Promise<PortalProduct[]> => {
           const params = new URLSearchParams({
             sc: ctx.storage.channel.salesChannel,
             groupByProduct: groupByProduct.toString(),
           })
 
           return fetchAPI(
-            `${base}/api/catalog_system/pub/products/crossselling/${type}/${productId}?${params}`,
+            `${base}/api/catalog_system/pub/products/crossselling/${type}/${productId}?${params}`
           )
         },
       },
@@ -86,16 +94,20 @@ export const VtexCommerce = (
           }
         )
       },
-      shippingData: (
-        { id, body }: { id: string; body: unknown },
-      ): Promise<OrderForm> => {
+      shippingData: ({
+        id,
+        body,
+      }: {
+        id: string
+        body: unknown
+      }): Promise<OrderForm> => {
         return fetchAPI(
           `${base}/api/checkout/pub/orderForm/${id}/attachments/shippingData`,
           {
             ...BASE_INIT,
             body: JSON.stringify(body),
-          },
-        );
+          }
+        )
       },
       orderForm: ({
         id,
@@ -159,7 +171,7 @@ export const VtexCommerce = (
             ...BASE_INIT,
             body: JSON.stringify({ value }),
             method: 'PUT',
-          },
+          }
         )
       },
       region: async ({
@@ -185,19 +197,42 @@ export const VtexCommerce = (
     session: (search: string): Promise<Session> => {
       const params = new URLSearchParams(search)
 
+      let publicFields = []
+
+      for (const [key, value] of params) {
+        if (!key.includes('public')) continue
+
+        const [, setKey] = key.split('.')
+        params.set(setKey, value)
+        publicFields.push(key)
+      }
+
       params.set(
         'items',
-        'profile.id,profile.email,profile.firstName,profile.lastName,store.channel,store.countryCode,store.cultureInfo,store.currencyCode,store.currencySymbol'
+        `profile.id,profile.email,profile.firstName,profile.lastName,store.channel,store.countryCode,store.cultureInfo,store.currencyCode,store.currencySymbol,${publicFields.join(
+          ','
+        )}`
       )
 
-      return fetchAPI(`${base}/api/sessions?${params.toString()}`, {
+      const response = fetch(`${base}/api/sessions?${params.toString()}`, {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          cookie: ctx.headers.cookie,
+          cookie: ctx.headers?.cookie,
         },
         body: '{}',
       })
+        .then((res) => {
+          const cookieValue = res.headers.get('set-cookie') ?? ''
+          mutateCookieContext(ctx, cookieValue)
+          return res.json()
+        })
+        .catch((err) => {
+          console.error(err)
+          throw new Error(err)
+        })
+
+      return response
     },
     subscribeToNewsletter: (data: {
       name: string

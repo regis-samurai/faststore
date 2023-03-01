@@ -8,8 +8,8 @@ const serverPort = '4000'
 
 const apiOptions = {
   platform: 'vtex',
-  account: 'storeframework',
-  locale: 'en-US',
+  account: 'trescoracoesfaststore',
+  locale: 'pt-BR',
   environment: 'vtexcommercestable',
   channel: '{"salesChannel":"1"}',
 } as Options
@@ -36,5 +36,4 @@ app.use(
 
 app.listen(serverPort)
 
-// eslint-disable-next-line no-console
 console.log(`🚀 GraphQL server ready at http://localhost:${serverPort}/graphql`)

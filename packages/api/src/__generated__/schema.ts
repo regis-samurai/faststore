@@ -215,6 +215,13 @@ export type IStorePropertyValue = {
   valueReference: Scalars['String'];
 };
 
+export type IStorePublic = {
+  /** Public key name (e.g: utm_campaign). */
+  key: Scalars['String'];
+  /** Public key value (e.g: outlet). */
+  value: Scalars['String'];
+};
+
 /** Selected search facet input. */
 export type IStoreSelectedFacet = {
   /** Selected search facet key. */
@@ -227,6 +234,8 @@ export type IStoreSelectedFacet = {
 export type IStoreSession = {
   /** Session input channel. */
   channel?: Maybe<Scalars['String']>;
+  /** Session cookie. */
+  cookie?: Maybe<Scalars['String']>;
   /** Session input country. */
   country: Scalars['String'];
   /** Session input currency. */
@@ -237,6 +246,8 @@ export type IStoreSession = {
   person?: Maybe<IStorePerson>;
   /** Session input postal code. */
   postalCode?: Maybe<Scalars['String']>;
+  /** Session input public field. */
+  public?: Maybe<Array<Maybe<IStorePublic>>>;
 };
 
 export type LogisticsInfo = {
@@ -422,6 +433,7 @@ export type QueryProductArgs = {
 
 export type QuerySearchArgs = {
   after?: Maybe<Scalars['String']>;
+  cookie?: Maybe<Scalars['String']>;
   first: Scalars['Int'];
   selectedFacets?: Maybe<Array<IStoreSelectedFacet>>;
   sort?: Maybe<StoreSort>;
@@ -885,6 +897,15 @@ export type StorePropertyValue = {
   valueReference: Scalars['String'];
 };
 
+/** Public information. */
+export type StorePublic = {
+  __typename?: 'StorePublic';
+  /** Public key name (e.g: utm_campaign). */
+  key: Scalars['String'];
+  /** Public key value (e.g: outlet). */
+  value: Scalars['String'];
+};
+
 /** Information of a given review. */
 export type StoreReview = {
   __typename?: 'StoreReview';
@@ -932,6 +953,8 @@ export type StoreSession = {
   __typename?: 'StoreSession';
   /** Session channel. */
   channel?: Maybe<Scalars['String']>;
+  /** Session cookie. */
+  cookie?: Maybe<Scalars['String']>;
   /** Session country. */
   country: Scalars['String'];
   /** Session currency. */
@@ -942,6 +965,8 @@ export type StoreSession = {
   person?: Maybe<StorePerson>;
   /** Session postal code. */
   postalCode?: Maybe<Scalars['String']>;
+  /** Session public fields. */
+  public?: Maybe<Array<StorePublic>>;
 };
 
 /** Product search results sorting options. */

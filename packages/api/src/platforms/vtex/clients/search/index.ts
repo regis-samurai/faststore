@@ -31,6 +31,7 @@ export interface SearchArgs {
   selectedFacets?: SelectedFacet[]
   fuzzy?: '0' | '1' | 'auto'
   hideUnavailableItems?: boolean
+  cookie?: string
 }
 
 export interface ProductLocator {
@@ -106,6 +107,7 @@ export const IntelligentSearch = (
     selectedFacets = [],
     type,
     fuzzy = 'auto',
+    cookie = '',
   }: SearchArgs): Promise<T> => {
     const params = new URLSearchParams({
       page: (page + 1).toString(),
@@ -125,7 +127,13 @@ export const IntelligentSearch = (
       .join('/')
 
     return fetchAPI(
-      `${base}/_v/api/intelligent-search/${type}/${pathname}?${params.toString()}`
+      `${base}/_v/api/intelligent-search/${type}/${pathname}?${params.toString()}`,
+      {
+        credentials: 'include',
+        headers: {
+          cookie,
+        },
+      }
     )
   }
 

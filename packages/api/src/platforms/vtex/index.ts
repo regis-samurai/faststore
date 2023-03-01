@@ -34,6 +34,7 @@ export interface Options {
   // Default sales channel to use for fetching products
   channel: string
   locale: string
+  cookie?: string
   hideUnavailableItems: boolean
   flags?: FeatureFlags
 }
@@ -53,6 +54,7 @@ export interface Context {
    * */
   storage: {
     channel: Required<Channel>
+    cookie: string
     locale: string
     flags: FeatureFlags
     searchArgs?: Omit<SearchArgs, 'type'>
@@ -96,6 +98,7 @@ export const getContextFactory =
       channel: ChannelMarshal.parse(options.channel),
       flags: options.flags ?? {},
       locale: options.locale,
+      cookie: options.cookie ?? '',
     }
     ctx.clients = getClients(options, ctx)
     ctx.loaders = getLoaders(options, ctx)

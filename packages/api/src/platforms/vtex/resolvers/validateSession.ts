@@ -10,13 +10,14 @@ import type {
 export const validateSession = async (
   _: any,
   { session: oldSession, search }: MutationValidateSessionArgs,
-  { clients }: Context
+  { clients, storage }: Context
 ): Promise<StoreSession | null> => {
   const channel = ChannelMarshal.parse(oldSession.channel ?? '')
   const postalCode = String(oldSession.postalCode ?? '').replace(/\D/g, '')
   const country = oldSession.country ?? ''
 
   const params = new URLSearchParams(search)
+
   const salesChannel = params.get('sc') ?? channel.salesChannel
 
   params.set('sc', salesChannel)
@@ -30,6 +31,7 @@ export const validateSession = async (
 
   const profile = sessionData?.namespaces.profile ?? null
   const store = sessionData?.namespaces.store ?? null
+  const publicFields = sessionData?.namespaces?.public ?? {}
 
   const newSession = {
     ...oldSession,
@@ -50,6 +52,15 @@ export const validateSession = async (
           familyName: profile.lastName?.value ?? '',
         }
       : null,
+    public: Object.keys(publicFields).length
+      ? Object.keys(publicFields).map((key: string) => {
+          return {
+            key,
+            value: publicFields[key].value,
+          }
+        })
+      : null,
+    cookie: storage.cookie,
   }
 
   if (deepEquals(oldSession, newSession)) {

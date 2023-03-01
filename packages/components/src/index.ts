@@ -29,6 +29,18 @@ export type { SelectProps } from './atoms/Select'
 export { default as SROnly } from './atoms/SROnly'
 
 // Molecules
+export {
+  default as Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+} from './molecules/Accordion'
+export type {
+  AccordionProps,
+  AccordionItemProps,
+  AccordionButtonProps,
+  AccordionPanelProps,
+} from './molecules/Accordion'
 export { default as BuyButton } from './molecules/BuyButton'
 export { default as CheckboxField } from './molecules/CheckboxField'
 export type { CheckboxFieldProps } from './molecules/CheckboxField'
@@ -36,6 +48,18 @@ export { default as IconButton } from './molecules/IconButton'
 export type { IconButtonProps } from './molecules/IconButton'
 export { default as DiscountBadge } from './molecules/DiscountBadge'
 export type { DiscountBadgeProps } from './molecules/DiscountBadge'
+export {
+  default as Dropdown,
+  DropdownButton,
+  DropdownItem,
+  DropdownMenu,
+} from './molecules/Dropdown'
+export type {
+  DropdownProps,
+  DropdownButtonProps,
+  DropdownItemProps,
+  DropdownMenuProps,
+} from './molecules/Dropdown'
 export { default as InputField } from './molecules/InputField'
 export type { InputFieldProps } from './molecules/InputField'
 export { default as LinkButton } from './molecules/LinkButton'
@@ -44,9 +68,33 @@ export { default as RadioField } from './molecules/RadioField'
 export type { RadioFieldProps } from './molecules/RadioField'
 export { default as SelectField } from './molecules/SelectField'
 export type { SelectFieldProps } from './molecules/SelectField'
+export {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableRow,
+} from './molecules/Table'
+export type {
+  TableProps,
+  TableBodyProps,
+  TableCellProps,
+  TableFooterProps,
+  TableHeadProps,
+  TableRowProps,
+} from './molecules/Table'
 export { default as Tag } from './molecules/Tag'
 export type { TagProps } from './molecules/Tag'
 export { default as Toggle } from './molecules/Toggle'
 export type { ToggleProps } from './molecules/Toggle'
 export { default as ToggleField } from './molecules/ToggleField'
 export type { ToggleFieldProps } from './molecules/ToggleField'
+
+// Organisms
+export { default as Hero, HeroImage, HeroHeading } from './organisms/Hero'
+export type {
+  HeroProps,
+  HeroImageProps,
+  HeroHeadingProps,
+} from './organisms/Hero'
